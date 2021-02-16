@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateResidentialComplexesTable extends Migration
+class CreateFeaturesResidentialComplexesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateResidentialComplexesTable extends Migration
      */
     public function up()
     {
-        Schema::create('residential_complexes', function (Blueprint $table) {
+        Schema::create('features_residential_complexes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('title');
             $table->string('description');
+            $table->string('residential_complex_id')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateResidentialComplexesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('residential_complexes');
+        Schema::dropIfExists('features_residential_complexes');
     }
 }

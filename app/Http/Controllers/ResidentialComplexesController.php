@@ -14,8 +14,16 @@ class ResidentialComplexesController extends Controller
      */
     public function index()
     {
-        $residentialcomplexes = ResidentialComplex::all();
-        return $residentialcomplexes;
+        $residential_complexes = ResidentialComplex::all();
+        $data = [];
+        foreach ($residential_complexes as $residential_complex) {
+            $features_residential_complex = $residential_complex->features_residential_complexes('residential_complex_id')->get();
+            $features_appartments = $residential_complex->features_appartments('residential_complex_id')->get();
+            $gallery_residential_complex = $residential_complex->gallery_residential_complex('residential_complex_id')->get();
+            $residential_complex_value = $residential_complex;
+            array_push($data, compact('residential_complex_value', 'features_residential_complex', 'features_appartments', 'gallery_residential_complex'));
+        }
+        return json_encode($data);
     }
 
     /**
@@ -26,12 +34,14 @@ class ResidentialComplexesController extends Controller
      */
     public function store(Request $request)
     {
-        $residentialcomplex = new ResidentialComplex();
-        $residentialcomplex->name = $request['name'];
-        $residentialcomplex->description = $request['description'];
-        $residentialcomplex->image = $request['image'];
-        $residentialcomplex->save();
-        return $residentialcomplex;
+        $residential_complex = new ResidentialComplex();
+
+        $residential_complex->name = $request['name'];
+        $residential_complex->title = $request['title'];
+        $residential_complex->description = $request['description'];
+
+        $residential_complex->save();
+        return $residential_complex;
     }
 
     /**
@@ -42,7 +52,15 @@ class ResidentialComplexesController extends Controller
      */
     public function show($id)
     {
-        //
+        $residential_complex = ResidentialComplex::find($id);
+        $data = [];
+
+        $features_residential_complex = $residential_complex->features_residential_complexes('residential_complex_id')->get();
+        $features_appartments = $residential_complex->features_appartments('residential_complex_id')->get();
+        $gallery_residential_complex = $residential_complex->gallery_residential_complex('residential_complex_id')->get();
+        array_push($data, compact('residential_complex', 'features_residential_complex', 'features_appartments', 'gallery_residential_complex'));
+
+        return json_encode($data);
     }
 
     /**
@@ -54,7 +72,14 @@ class ResidentialComplexesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $residential_complex = ResidentialComplex::find($id);
+
+        $residential_complex->name = $request['name'];
+        $residential_complex->title = $request['title'];
+        $residential_complex->description = $request['description'];
+
+        $residential_complex->save();
+        return $residential_complex;
     }
 
     /**
@@ -65,6 +90,12 @@ class ResidentialComplexesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $residential_complex = ResidentialComplex::find($id);
+        if (false != $residential_complex) {
+            $residential_complex->delete();
+            return "This $residential_complex->name was deleted";
+        } else {
+            return "This Post was deleted erlier";
+        }
     }
 }

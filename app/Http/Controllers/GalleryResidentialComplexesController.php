@@ -26,20 +26,15 @@ class GalleryResidentialComplexesController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,svg',
+        ]);
+
         $file = $request->file('image');
         $name = date('dmyhis');
         $extension = $file->getClientOriginalExtension();
-
         $fullName = ($name . '.' . $extension);
-
         $file->move(public_path('images/gallery_residential_complexes'), $fullName);
-
-//        $validation = \Validator::make($request->all(), [
-//            'image' => 'mimes:jpg,jpeg,svg,png'
-//        ]);
-//        if ($validation->fails()) {
-//            return $validation->errors();
-//        }
 
         $gallery_residential_complex = new GalleryResidentialComplex();
         $gallery_residential_complex->image = env("APP_URL", 'http://localhost').'/images/gallery_residential_complexes/' . $name . '.' . $extension;

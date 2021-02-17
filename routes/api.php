@@ -17,3 +17,6 @@ Route::apiResource('residential_complexes', 'App\Http\Controllers\ResidentialCom
 Route::apiResource('features_residential_complexes', 'App\Http\Controllers\FeaturesResidentialComplexesController');
 Route::apiResource('features_appartments', 'App\Http\Controllers\FeaturesAppartmentsController');
 Route::apiResource('gallery_residential_complexes', 'App\Http\Controllers\GalleryResidentialComplexesController');
+Route::apiResource('construction_progress', 'App\Http\Controllers\ConstructionProgressController');
+Route::apiResource('construction_progress_gallery', 'App\Http\Controllers\ConstructionProgressGalleryController');
+

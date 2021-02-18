@@ -20,7 +20,7 @@ class ResidentialComplex extends Model
     public function construction_progress() {
         return $this->hasMany('App\Models\ConstructionProgress', 'residential_complex_id');
     }
-    public function construction_progress_gallery() {
-        return $this->hasMany('App\Models\ConstructionProgressGallery', 'construction_progress_id');
+    public function residential_complex_houses() {
+        return $this->hasMany('App\Models\ResidentialComplexHouse', 'residential_complex_id');
     }
 }

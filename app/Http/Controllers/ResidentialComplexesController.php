@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ResidentialComplex;
-use App\Models\ConstructionProgress;
 
 class ResidentialComplexesController extends Controller
 {
@@ -22,7 +21,6 @@ class ResidentialComplexesController extends Controller
             $features_appartments = $residential_complex->features_appartments('residential_complex_id')->get();
             $gallery_residential_complex = $residential_complex->gallery_residential_complex('residential_complex_id')->get();
 
-
             $construction_progress_values = $residential_complex->construction_progress('residential_complex_id')->get();
 
             $construction_progress = [];
@@ -32,13 +30,24 @@ class ResidentialComplexesController extends Controller
                 array_push($construction_progress, compact('construction_progress_date', 'construction_progress_gallery'));
             }
 
+
+            $residential_complex_houses_values = $residential_complex->residential_complex_houses('residential_complex_id')->get();
+
+            $residential_complex_houses = [];
+            foreach ($residential_complex_houses_values as $residential_complex_houses_value) {
+                $residential_complex_house = $residential_complex->residential_complex_houses('residential_complex_id')->get();
+                $residential_complex_house_descriptions = $residential_complex_houses_value->residential_complex_house_descriptions('residential_complex_house_id')->get();
+                array_push($residential_complex_houses, compact('residential_complex_house', 'residential_complex_house_descriptions'));
+            }
+
             $residential_complex_value = $residential_complex;
             array_push($data, compact(
                 'residential_complex_value',
                 'features_residential_complex',
                 'features_appartments',
                 'gallery_residential_complex',
-                'construction_progress'
+                'construction_progress',
+                'residential_complex_houses'
             ));
         }
         return json_encode($data);
@@ -76,9 +85,36 @@ class ResidentialComplexesController extends Controller
         $features_residential_complex = $residential_complex->features_residential_complexes('residential_complex_id')->get();
         $features_appartments = $residential_complex->features_appartments('residential_complex_id')->get();
         $gallery_residential_complex = $residential_complex->gallery_residential_complex('residential_complex_id')->get();
-        array_push($data, compact('residential_complex', 'features_residential_complex', 'features_appartments', 'gallery_residential_complex'));
+
+        $construction_progress_values = $residential_complex->construction_progress('residential_complex_id')->get();
+
+        $construction_progress = [];
+        foreach ($construction_progress_values as $construction_progress_value) {
+            $construction_progress_date = $residential_complex->construction_progress('residential_complex_id')->get();
+            $construction_progress_gallery = $construction_progress_value->construction_progress_gallery('construction_progress_id')->get();
+            array_push($construction_progress, compact('construction_progress_date', 'construction_progress_gallery'));
+        }
+
+        $residential_complex_houses_values = $residential_complex->residential_complex_houses('residential_complex_id')->get();
+
+        $residential_complex_houses = [];
+        foreach ($residential_complex_houses_values as $residential_complex_houses_value) {
+            $residential_complex_house = $residential_complex->residential_complex_houses('residential_complex_id')->get();
+            $residential_complex_house_descriptions = $residential_complex_houses_value->residential_complex_house_descriptions('residential_complex_house_id')->get();
+            array_push($residential_complex_houses, compact('residential_complex_house', 'residential_complex_house_descriptions'));
+        }
+
+        array_push($data, compact(
+    'residential_complex',
+    'features_residential_complex',
+            'features_appartments',
+            'gallery_residential_complex',
+            'construction_progress',
+            'residential_complex_houses'
+        ));
 
         return json_encode($data);
+
     }
 
     /**

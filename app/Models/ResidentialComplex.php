@@ -23,4 +23,13 @@ class ResidentialComplex extends Model
     public function residential_complex_houses() {
         return $this->hasMany('App\Models\ResidentialComplexHouse', 'residential_complex_id');
     }
+    public function comments() {
+        return $this->hasMany('App\Models\Comment', 'residential_complex_id');
+    }
+    public function advantages() {
+        return $this->hasMany('App\Models\Advantage', 'residential_complex_id');
+    }
+    public function map_marker() {
+        return $this->belongsTo('App\Models\MapMarker', 'marker_id');
+    }
 }
